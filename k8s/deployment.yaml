@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-pdcr
+  labels:
+    app: event-pdcr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-pdcr
+  template:
+    metadata:
+      labels:
+        app: event-pdcr
+    spec:
+      containers:
+      - name: event-pdcr
+        image: event_pdcr:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 50051
+          name: grpc
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          exec:
+            command:
+              - grpc-health-probe
+              - -addr=:50051
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+              - grpc-health-probe
+              - -addr=:50051
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5

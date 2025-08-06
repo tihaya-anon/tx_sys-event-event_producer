@@ -1,0 +1,5 @@
+syntax = "proto3";
+package event_producer;
+option go_package = "github.com/tihaya-anon/tx_sys-event-event_producer/src/pb";
+
+service EventProducer {}
