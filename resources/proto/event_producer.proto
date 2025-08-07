@@ -2,4 +2,16 @@ syntax = "proto3";
 package event_producer;
 option go_package = "github.com/tihaya-anon/tx_sys-event-event_producer/src/pb";
 
-service EventProducer {}
+message OrderMatchReq {
+  uint64 buy_order_id = 1;
+  uint64 sell_order_id = 2;
+  string price = 3;
+  string quantity = 4;
+  uint64 timestamp = 5;
+}
+
+message OrderMatchResp { string correlation_id = 1; }
+
+service EventProducer {
+  rpc OrderMatch(OrderMatchReq) returns (OrderMatchResp);
+}

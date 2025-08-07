@@ -7,11 +7,14 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/tihaya-anon/tx_sys-event-event_producer/src/server"
 )
 
 func main() {
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr}).With().Caller().Logger()
 	// Initialize server
 	srv, err := server.NewServer(50051)
 	if err != nil {
